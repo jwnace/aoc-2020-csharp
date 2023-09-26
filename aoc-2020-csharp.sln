@@ -1,0 +1,29 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{01157D0B-3D64-4179-B8E3-410E6A341A13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aoc-2020-csharp", "src\aoc-2020-csharp\aoc-2020-csharp.csproj", "{71E318C1-C4FD-4E70-95DF-F356BF83B192}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A9D08A4B-A71A-4B38-BEAB-A5A6DF98575E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aoc-2020-csharp-tests", "tests\aoc-2020-csharp-tests\aoc-2020-csharp-tests.csproj", "{2A03C5F2-281B-4DE9-80D6-D43FCBC6B320}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{71E318C1-C4FD-4E70-95DF-F356BF83B192}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71E318C1-C4FD-4E70-95DF-F356BF83B192}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71E318C1-C4FD-4E70-95DF-F356BF83B192}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71E318C1-C4FD-4E70-95DF-F356BF83B192}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A03C5F2-281B-4DE9-80D6-D43FCBC6B320}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A03C5F2-281B-4DE9-80D6-D43FCBC6B320}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A03C5F2-281B-4DE9-80D6-D43FCBC6B320}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A03C5F2-281B-4DE9-80D6-D43FCBC6B320}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{71E318C1-C4FD-4E70-95DF-F356BF83B192} = {01157D0B-3D64-4179-B8E3-410E6A341A13}
+		{2A03C5F2-281B-4DE9-80D6-D43FCBC6B320} = {A9D08A4B-A71A-4B38-BEAB-A5A6DF98575E}
+	EndGlobalSection
+EndGlobal
