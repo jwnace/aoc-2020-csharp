@@ -10,36 +10,18 @@ public static class Day01
 
     public static int Solve1(int[] input)
     {
-        foreach (var a in input)
-        {
-            foreach (var b in input)
-            {
-                if (a + b == 2020)
-                {
-                    return a * b;
-                }
-            }
-        }
+        var a = input.First(x => input.Contains(2020 - x));
+        var b = 2020 - a;
 
-        return 0;
+        return a * b;
     }
 
     public static int Solve2(int[] input)
     {
-        foreach (var a in input)
-        {
-            foreach (var b in input)
-            {
-                foreach (var c in input)
-                {
-                    if (a + b + c == 2020)
-                    {
-                        return a * b * c;
-                    }
-                }
-            }
-        }
+        var a = input.First(x => input.Any(y => input.Contains(2020 - x - y)));
+        var b = input.First(x => input.Contains(2020 - a - x));
+        var c = 2020 - a - b;
 
-        return 0;
+        return a * b * c;
     }
 }
