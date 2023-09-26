@@ -24,18 +24,13 @@ public static class Day03
     private static int CountTrees(string[] input, int right, int down)
     {
         var count = 0;
-        var j = 0;
+        var col = 0;
 
-        for (var i = 0; i < input.Length; i += down)
+        for (var row = 0; row < input.Length; row += down)
         {
-            if (j >= input[i].Length)
-            {
-                j -= input[i].Length;
-            }
-
-            count += input[i][j] == '#' ? 1 : 0;
-
-            j += right;
+            col %= input[row].Length;
+            count += input[row][col] == '#' ? 1 : 0;
+            col += right;
         }
 
         return count;
