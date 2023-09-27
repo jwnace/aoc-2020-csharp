@@ -6,9 +6,13 @@ public static class Day07
 
     public static int Part1() => Solve1(Input);
 
-    public static int Part2() => 2;
+    public static int Part2() => Solve2(Input);
 
-    public static int Solve1(string input)
+    public static int Solve1(string input) => GetBags(input).Count(x => x.Value.CanContain("shiny gold"));
+
+    public static int Solve2(string input) => GetBags(input)["shiny gold"].CountAllChildren();
+
+    private static Dictionary<string, Bag> GetBags(string input)
     {
         var bags = new Dictionary<string, Bag>();
         var rules = input.Split(Environment.NewLine);
@@ -30,50 +34,33 @@ public static class Day07
                 }
 
                 var childParts = child.Split(" ");
+                var childCount = int.Parse(childParts[0]);
                 var childColor = $"{childParts[1]} {childParts[2]}";
 
                 var childBag = bags.TryGetValue(childColor, out var cb) ? cb : new Bag(childColor);
                 bags[childColor] = childBag;
 
-                bag.Children.Add(childBag);
+                bag.Children[childBag] = childCount;
             }
         }
 
-        return bags.Count(x => x.Value.CanContain("shiny gold"));
-    }
-
-    public static int Solve2(string input)
-    {
-        return 2;
+        return bags;
     }
 
     private class Bag
     {
-        // private Bag? _parent = null;
+        private string Color { get; }
 
         public Bag(string color)
         {
             Color = color;
         }
 
-        public string Color { get; }
-
-        // public Bag? Parent
-        // {
-            // get => _parent;
-            // set => _parent = _parent is null ? value : throw new Exception("Parent already set");
-        // }
-
-        public List<Bag> Children { get; } = new();
+        public Dictionary<Bag, int> Children { get; } = new();
 
         public bool CanContain(string color) =>
-            Children.Any(c => c.Color == color) || Children.Any(c => c.CanContain(color));
+            Children.Any(c => c.Key.Color == color) || Children.Any(c => c.Key.CanContain(color));
 
-        // public void Deconstruct(out string Color, out Bag? Parent, out List<Bag>? Children)
-        // {
-        //     Color = this.Color;
-        //     Parent = this.Parent;
-        //     Children = this.Children;
-        // }
+        public int CountAllChildren() => Children.Sum(c => c.Value * (1 + c.Key.CountAllChildren()));
     }
 }
