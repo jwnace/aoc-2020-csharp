@@ -1,4 +1,6 @@
-﻿namespace aoc_2020_csharp.Day04;
+﻿using System.Text.RegularExpressions;
+
+namespace aoc_2020_csharp.Day04;
 
 public static class Day04
 {
@@ -8,13 +10,12 @@ public static class Day04
 
     public static int Part2() => Solve2(Input);
 
-    public static int Solve1(string input) =>
-        input.Split($"{Environment.NewLine + Environment.NewLine}").Select(Passport.Parse).Count(p => p.IsValid());
+    public static int Solve1(string input) => ParsePassports(input).Count(p => p.HasAllRequiredFields());
 
-    public static int Solve2(string input)
-    {
-        throw new NotImplementedException();
-    }
+    public static int Solve2(string input) => ParsePassports(input).Count(p => p.IsValid());
+
+    private static IEnumerable<Passport> ParsePassports(string input) =>
+        input.Split($"{Environment.NewLine + Environment.NewLine}").Select(Passport.Parse);
 
     private record Passport(
         string? BirthYear,
@@ -50,15 +51,49 @@ public static class Day04
                 dict.GetValueOrDefault("cid"));
         }
 
-        public bool IsValid()
-        {
-            return BirthYear != null &&
-                   IssueYear != null &&
-                   ExpirationYear != null &&
-                   Height != null &&
-                   HairColor != null &&
-                   EyeColor != null &&
-                   PassportId != null;
-        }
+        public bool HasAllRequiredFields() =>
+            BirthYear != null &&
+            IssueYear != null &&
+            ExpirationYear != null &&
+            Height != null &&
+            HairColor != null &&
+            EyeColor != null &&
+            PassportId != null;
+
+        public bool IsValid() =>
+            HasAllRequiredFields() &&
+            HasValidBirthYear() &&
+            HasValidIssueYear() &&
+            HasValidExpirationYear() &&
+            HasValidHeight() &&
+            HasValidHairColor() &&
+            HasValidEyeColor() &&
+            HasValidPassportId();
+
+        private bool HasValidBirthYear() =>
+            int.TryParse(BirthYear, out var birthYear) && birthYear is >= 1920 and <= 2002;
+
+        private bool HasValidIssueYear() =>
+            int.TryParse(IssueYear, out var issueYear) && issueYear is >= 2010 and <= 2020;
+
+        private bool HasValidExpirationYear() =>
+            int.TryParse(ExpirationYear, out var expirationYear) && expirationYear is >= 2020 and <= 2030;
+
+        private bool HasValidHeight() =>
+            Height![^2..] switch
+            {
+                "cm" => int.TryParse(Height[..^2], out var heightCm) && heightCm is >= 150 and <= 193,
+                "in" => int.TryParse(Height[..^2], out var heightIn) && heightIn is >= 59 and <= 76,
+                _ => false
+            };
+
+        private bool HasValidHairColor() =>
+            Regex.IsMatch(HairColor!, "^#[0-9a-f]{6}$");
+
+        private bool HasValidEyeColor() =>
+            Regex.IsMatch(EyeColor!, "^(amb|blu|brn|gry|grn|hzl|oth)$");
+
+        private bool HasValidPassportId() =>
+            Regex.IsMatch(PassportId!, "^[0-9]{9}$");
     }
 }
