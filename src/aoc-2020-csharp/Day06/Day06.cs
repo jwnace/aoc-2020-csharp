@@ -8,21 +8,30 @@ public static class Day06
 
     public static int Part2() => Solve2(Input);
 
-    public static int Solve1(string input) => GetFlattenedGroups(input).Sum(CountDistinctAnswers);
+    public static int Solve1(string input) => GetGroups(input).Sum(g => g.CountDistinctAnswers());
 
-    public static int Solve2(string input) => GetGroups(input).Sum(CountUnanimousAnswers);
+    public static int Solve2(string input) => GetGroups(input).Sum(g => g.CountUnanimousAnswers());
 
-    private static IEnumerable<string> GetFlattenedGroups(string input) => GetGroups(input).Select(FlattenGroup);
+    private static IEnumerable<Group> GetGroups(string input) =>
+        input.Split($"{Environment.NewLine}{Environment.NewLine}").Select(Group.Parse);
 
-    private static IEnumerable<string> GetGroups(string input) =>
-        input.Split($"{Environment.NewLine}{Environment.NewLine}");
+    private record Group(IEnumerable<Person> People)
+    {
+        public static Group Parse(string input) => new(input.Split(Environment.NewLine).Select(Person.Parse));
 
-    private static string FlattenGroup(string group) => group.Replace(Environment.NewLine, string.Empty);
+        public int CountDistinctAnswers() => People.SelectMany(p => p.Answers).Distinct().Count();
 
-    private static int CountDistinctAnswers(string group) => group.Distinct().Count();
+        public int CountUnanimousAnswers() =>
+            People.SelectMany(p => p.Answers).GroupBy(a => a).Count(g => g.Count() == People.Count());
+    }
 
-    private static int CountUnanimousAnswers(string group) =>
-        FlattenGroup(group).GroupBy(answer => answer).Count(g => g.Count() == CountPeople(group));
+    private record Person(IEnumerable<Answer> Answers)
+    {
+        public static Person Parse(string input) => new(input.Select(Answer.Parse));
+    }
 
-    private static int CountPeople(string group) => group.Split(Environment.NewLine).Length;
+    private record Answer(char Value)
+    {
+        public static Answer Parse(char value) => new(value);
+    }
 }
