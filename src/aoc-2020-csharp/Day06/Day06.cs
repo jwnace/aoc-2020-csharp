@@ -25,13 +25,8 @@ public static class Day06
             People.SelectMany(p => p.Answers).GroupBy(a => a).Count(g => g.Count() == People.Count());
     }
 
-    private record Person(IEnumerable<Answer> Answers)
+    private record Person(IEnumerable<char> Answers)
     {
-        public static Person Parse(string input) => new(input.Select(Answer.Parse));
-    }
-
-    private record Answer(char Value)
-    {
-        public static Answer Parse(char value) => new(value);
+        public static Person Parse(string input) => new(input.Select(c => c));
     }
 }
