@@ -18,9 +18,9 @@ public static class Day08
         while (true)
         {
             var program = ModifyProgram(input, ref indexToModify);
-            var halts = RunProgram(program, out var accumulator);
+            var halt = RunProgram(program, out var accumulator);
 
-            if (halts)
+            if (halt)
             {
                 return accumulator;
             }
