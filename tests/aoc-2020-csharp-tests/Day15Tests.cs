@@ -13,7 +13,7 @@ public class Day15Tests
     [TestCase(new[] { 3, 1, 2 }, 1836)]
     public void Part1_Examples_ReturnCorrectAnswer(int[] input, int expected)
     {
-        var actual = Day15.Solve1(input);
+        var actual = Day15.Solve(input.ToList(), 2020);
         actual.Should().Be(expected);
     }
 
@@ -34,7 +34,7 @@ public class Day15Tests
     [TestCase(new[] { 3, 1, 2 }, 362)]
     public void Part2_Examples_ReturnCorrectAnswer(int[] input, int expected)
     {
-        var actual = Day15.Solve2(input);
+        var actual = Day15.Solve(input.ToList(), 30000000);
         actual.Should().Be(expected);
     }
 
