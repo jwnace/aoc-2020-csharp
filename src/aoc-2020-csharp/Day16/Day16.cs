@@ -6,5 +6,5 @@ public static class Day16
 
     public static int Part1() => 1;
 
-    public static int Part2() => 2;
+    public static long Part2() => 2;
 }
