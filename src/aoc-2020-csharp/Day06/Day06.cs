@@ -14,19 +14,4 @@ public static class Day06
 
     private static IEnumerable<Group> GetGroups(string input) =>
         input.Split($"{Environment.NewLine}{Environment.NewLine}").Select(Group.Parse);
-
-    private record Group(IEnumerable<Person> People)
-    {
-        public static Group Parse(string input) => new(input.Split(Environment.NewLine).Select(Person.Parse));
-
-        public int CountDistinctAnswers() => People.SelectMany(p => p.Answers).Distinct().Count();
-
-        public int CountUnanimousAnswers() =>
-            People.SelectMany(p => p.Answers).GroupBy(a => a).Count(g => g.Count() == People.Count());
-    }
-
-    private record Person(IEnumerable<char> Answers)
-    {
-        public static Person Parse(string input) => new(input.Select(c => c));
-    }
 }
