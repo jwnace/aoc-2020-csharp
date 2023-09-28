@@ -22,7 +22,7 @@ public class Day11Tests
         };
 
         var expected = 37;
-        var actual = Day11.Solve1(input);
+        var actual = Day11.Solve(input, 4, Day11.CountOccupiedNeighbors);
         actual.Should().Be(expected);
     }
 
@@ -52,7 +52,7 @@ public class Day11Tests
         };
 
         var expected = 26;
-        var actual = Day11.Solve2(input);
+        var actual = Day11.Solve(input, 5, Day11.CountOccupiedVisibleSeats);
         actual.Should().Be(expected);
     }
 
