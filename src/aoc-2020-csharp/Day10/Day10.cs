@@ -30,7 +30,7 @@ public static class Day10
 
         foreach (var adapter in adapters)
         {
-            memo[adapter] = Enumerable.Range(1, 3).Select(i => memo.GetValueOrDefault(adapter + i, 0L)).Sum();
+            memo[adapter] = Enumerable.Range(1, 3).Sum(i => memo.GetValueOrDefault(adapter + i, 0));
         }
 
         return memo[0];
