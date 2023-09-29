@@ -12,7 +12,7 @@ public class Day18Tests
     [TestCase("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", 13632)]
     public void Part1_Examples_ReturnCorrectAnswer(string input, long expected)
     {
-        var actual = Day18.Solve1(input);
+        var actual = Day18.Solve1(input).Result;
         actual.Should().Be(expected);
     }
 
