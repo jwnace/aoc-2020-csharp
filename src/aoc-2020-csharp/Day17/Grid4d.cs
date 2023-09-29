@@ -1,6 +1,6 @@
 namespace aoc_2020_csharp.Day17;
 
-public class Grid4d
+public class Grid4d : IGrid<Grid4d, Coordinate4d>
 {
     private readonly Dictionary<Coordinate4d, bool> _grid = new();
 

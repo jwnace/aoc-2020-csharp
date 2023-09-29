@@ -15,7 +15,7 @@ public class Day17Tests
             """;
 
         var expected = 112;
-        var actual = Day17.Solve1(input);
+        var actual = Day17.Solve<Grid3d, Coordinate3d>(input);
         actual.Should().Be(expected);
     }
 
@@ -38,7 +38,7 @@ public class Day17Tests
             """;
 
         var expected = 848;
-        var actual = Day17.Solve2(input);
+        var actual = Day17.Solve<Grid4d, Coordinate4d>(input);
         actual.Should().Be(expected);
     }
 

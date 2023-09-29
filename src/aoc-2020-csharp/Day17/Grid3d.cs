@@ -1,6 +1,6 @@
 namespace aoc_2020_csharp.Day17;
 
-public class Grid3d
+public class Grid3d : IGrid<Grid3d, Coordinate3d>
 {
     private readonly Dictionary<Coordinate3d, bool> _grid = new();
 
