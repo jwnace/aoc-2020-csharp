@@ -1,18 +1,8 @@
 namespace aoc_2020_csharp.Day17;
 
-public class Grid4d : IGrid<Grid4d, Coordinate4d>
+public class Grid4d : IGrid<Grid4d>
 {
     private readonly Dictionary<Coordinate4d, bool> _grid = new();
-
-    private bool this[Coordinate4d coordinate]
-    {
-        get => _grid.TryGetValue(coordinate, out var v) && v;
-        set => _grid[coordinate] = value;
-    }
-
-    private IEnumerable<Coordinate4d> Coordinates => _grid.Keys.ToArray();
-
-    public int Count(Func<KeyValuePair<Coordinate4d, bool>, bool> func) => _grid.Count(func);
 
     public static Grid4d Parse(string input)
     {
@@ -28,35 +18,6 @@ public class Grid4d : IGrid<Grid4d, Coordinate4d>
         }
 
         return grid;
-    }
-
-    private int CountActiveNeighbors(Coordinate4d coordinate)
-    {
-        var count = 0;
-
-        for (var w = coordinate.W - 1; w <= coordinate.W + 1; w++)
-        {
-            for (var z = coordinate.Z - 1; z <= coordinate.Z + 1; z++)
-            {
-                for (var y = coordinate.Y - 1; y <= coordinate.Y + 1; y++)
-                {
-                    for (var x = coordinate.X - 1; x <= coordinate.X + 1; x++)
-                    {
-                        if (x == coordinate.X && y == coordinate.Y && z == coordinate.Z && w == coordinate.W)
-                        {
-                            continue;
-                        }
-
-                        if (this[new Coordinate4d(x, y, z, w)])
-                        {
-                            count++;
-                        }
-                    }
-                }
-            }
-        }
-
-        return count;
     }
 
     public Grid4d Step()
@@ -93,5 +54,44 @@ public class Grid4d : IGrid<Grid4d, Coordinate4d>
         }
 
         return newGrid;
+    }
+
+    public int CountActive() => _grid.Count(x => x.Value);
+
+    private bool this[Coordinate4d coordinate]
+    {
+        get => _grid.TryGetValue(coordinate, out var v) && v;
+        set => _grid[coordinate] = value;
+    }
+
+    private IEnumerable<Coordinate4d> Coordinates => _grid.Keys.ToArray();
+
+    private int CountActiveNeighbors(Coordinate4d coordinate)
+    {
+        var count = 0;
+
+        for (var w = coordinate.W - 1; w <= coordinate.W + 1; w++)
+        {
+            for (var z = coordinate.Z - 1; z <= coordinate.Z + 1; z++)
+            {
+                for (var y = coordinate.Y - 1; y <= coordinate.Y + 1; y++)
+                {
+                    for (var x = coordinate.X - 1; x <= coordinate.X + 1; x++)
+                    {
+                        if (x == coordinate.X && y == coordinate.Y && z == coordinate.Z && w == coordinate.W)
+                        {
+                            continue;
+                        }
+
+                        if (this[new Coordinate4d(x, y, z, w)])
+                        {
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+
+        return count;
     }
 }

@@ -4,11 +4,11 @@ public static class Day17
 {
     private static readonly string Input = File.ReadAllText("Day17/day17.txt").Trim();
 
-    public static int Part1() => Solve<Grid3d, Coordinate3d>(Input);
+    public static int Part1() => Solve<Grid3d>(Input);
 
-    public static int Part2() => Solve<Grid4d, Coordinate4d>(Input);
+    public static int Part2() => Solve<Grid4d>(Input);
 
-    public static int Solve<TGrid, TCoordinate>(string input) where TGrid : IGrid<TGrid, TCoordinate>
+    public static int Solve<TGrid>(string input) where TGrid : IGrid<TGrid>
     {
         var grid = TGrid.Parse(input);
 
@@ -17,6 +17,6 @@ public static class Day17
             grid = grid.Step();
         }
 
-        return grid.Count(x => x.Value);
+        return grid.CountActive();
     }
 }

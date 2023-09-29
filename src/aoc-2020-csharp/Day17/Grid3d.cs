@@ -1,18 +1,8 @@
 namespace aoc_2020_csharp.Day17;
 
-public class Grid3d : IGrid<Grid3d, Coordinate3d>
+public class Grid3d : IGrid<Grid3d>
 {
     private readonly Dictionary<Coordinate3d, bool> _grid = new();
-
-    private bool this[Coordinate3d coordinate]
-    {
-        get => _grid.TryGetValue(coordinate, out var v) && v;
-        set => _grid[coordinate] = value;
-    }
-
-    private IEnumerable<Coordinate3d> Coordinates => _grid.Keys.ToArray();
-
-    public int Count(Func<KeyValuePair<Coordinate3d, bool>, bool> func) => _grid.Count(func);
 
     public static Grid3d Parse(string input)
     {
@@ -28,32 +18,6 @@ public class Grid3d : IGrid<Grid3d, Coordinate3d>
         }
 
         return grid;
-    }
-
-    private int CountActiveNeighbors(Coordinate3d coordinate)
-    {
-        var count = 0;
-
-        for (var z = coordinate.Z - 1; z <= coordinate.Z + 1; z++)
-        {
-            for (var y = coordinate.Y - 1; y <= coordinate.Y + 1; y++)
-            {
-                for (var x = coordinate.X - 1; x <= coordinate.X + 1; x++)
-                {
-                    if (x == coordinate.X && y == coordinate.Y && z == coordinate.Z)
-                    {
-                        continue;
-                    }
-
-                    if (this[new Coordinate3d(x, y, z)])
-                    {
-                        count++;
-                    }
-                }
-            }
-        }
-
-        return count;
     }
 
     public Grid3d Step()
@@ -85,5 +49,41 @@ public class Grid3d : IGrid<Grid3d, Coordinate3d>
         }
 
         return newGrid;
+    }
+
+    public int CountActive() => _grid.Count(x => x.Value);
+
+    private bool this[Coordinate3d coordinate]
+    {
+        get => _grid.TryGetValue(coordinate, out var v) && v;
+        set => _grid[coordinate] = value;
+    }
+
+    private IEnumerable<Coordinate3d> Coordinates => _grid.Keys.ToArray();
+
+    private int CountActiveNeighbors(Coordinate3d coordinate)
+    {
+        var count = 0;
+
+        for (var z = coordinate.Z - 1; z <= coordinate.Z + 1; z++)
+        {
+            for (var y = coordinate.Y - 1; y <= coordinate.Y + 1; y++)
+            {
+                for (var x = coordinate.X - 1; x <= coordinate.X + 1; x++)
+                {
+                    if (x == coordinate.X && y == coordinate.Y && z == coordinate.Z)
+                    {
+                        continue;
+                    }
+
+                    if (this[new Coordinate3d(x, y, z)])
+                    {
+                        count++;
+                    }
+                }
+            }
+        }
+
+        return count;
     }
 }

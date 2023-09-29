@@ -1,8 +1,8 @@
 namespace aoc_2020_csharp.Day17;
 
-public interface IGrid<TGrid, TCoordinate>
+public interface IGrid<TGrid>
 {
     static abstract TGrid Parse(string input);
-    int Count(Func<KeyValuePair<TCoordinate, bool>, bool> func);
     TGrid Step();
+    int CountActive();
 }
