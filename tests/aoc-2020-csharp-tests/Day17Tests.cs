@@ -7,12 +7,12 @@ public class Day17Tests
     [Test]
     public void Part1_Example_ReturnsCorrectAnswer()
     {
-        var input =
-            """
-            .#.
-            ..#
-            ###
-            """;
+        var input = new[]
+        {
+            ".#.",
+            "..#",
+            "###",
+        };
 
         var expected = 112;
         var actual = Day17.Solve1(input);
@@ -30,15 +30,15 @@ public class Day17Tests
     [Test]
     public void Part2_Example_ReturnsCorrectAnswer()
     {
-        var input =
-            """
-            .#.
-            ..#
-            ###
-            """;
+        var input = new[]
+        {
+            ".#.",
+            "..#",
+            "###",
+        };
 
         var expected = 848;
-        var actual = Day17.Solve1(input);
+        var actual = Day17.Solve2(input);
         actual.Should().Be(expected);
     }
 
