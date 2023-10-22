@@ -30,7 +30,7 @@ public class Day22Tests
     [Test]
     public void Part1_ReturnsCorrectAnswer()
     {
-        Day22.Part1().Should().Be(0);
+        Day22.Part1().Should().Be(32783);
     }
 
     [Test]
