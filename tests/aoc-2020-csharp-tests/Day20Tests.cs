@@ -241,12 +241,12 @@ public class Day20Tests
             ..#.###...
             """;
 
-        Day20.Solve2(input).Should().Be(0);
+        Day20.Solve2(input).Should().Be(273);
     }
 
     [Test]
     public void Part2_ReturnsCorrectAnswer()
     {
-        Day20.Part2().Should().Be(0);
+        Day20.Part2().Should().Be(1639);
     }
 }
