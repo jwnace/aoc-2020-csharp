@@ -124,7 +124,7 @@ public class Day20Tests
     [Test]
     public void Part1_ReturnsCorrectAnswer()
     {
-        Day20.Part1().Should().Be(0);
+        Day20.Part1().Should().Be(19955159604613);
     }
 
     [Test]
