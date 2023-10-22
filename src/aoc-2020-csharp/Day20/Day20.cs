@@ -214,7 +214,6 @@ public static class Day20
 
                     if (monster.All(x => orientation[x.Row][x.Col] == '#'))
                     {
-                        Console.WriteLine("found a monster at " + row + ", " + col);
                         monsters++;
                     }
                 }
