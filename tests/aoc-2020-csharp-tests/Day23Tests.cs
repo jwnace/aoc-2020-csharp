@@ -20,12 +20,12 @@ public class Day23Tests
     [TestCase("389125467", 10_000_000, 149245887792)]
     public void Part2_Example_ReturnsCorrectAnswer(string input, int moves, long expected)
     {
-        Day23.Solve2(input, 10_000_000).Should().Be(expected);
+        Day23.Solve2(input, moves).Should().Be(expected);
     }
 
     [Test]
     public void Part2_ReturnsCorrectAnswer()
     {
-        Day23.Part2().Should().Be(0);
+        Day23.Part2().Should().Be(186715244496);
     }
 }
