@@ -6,6 +6,11 @@ public class Day24Tests
 {
     [TestCase(new[]
     {
+        "esew",
+        "nwwswee"
+    }, 2)]
+    [TestCase(new[]
+    {
         "sesenwnenenewseeswwswswwnenewsewsw",
         "neeenesenwnwwswnenewnwwsewnenwseswesw",
         "seswneswswsenwwnwse",
@@ -35,7 +40,7 @@ public class Day24Tests
     [Test]
     public void Part1_ReturnsCorrectAnswer()
     {
-        Day24.Part1().Should().Be(0);
+        Day24.Part1().Should().Be(351);
     }
 
     [Test]
