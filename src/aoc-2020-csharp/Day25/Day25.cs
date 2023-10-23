@@ -8,12 +8,11 @@ public static class Day25
 
     public static long Part1() => Solve1(Input);
 
-    public static int Part2() => 2;
+    public static string Part2() => "Merry Christmas!";
 
     public static long Solve1(int[] input)
     {
         var (cardPublicKey, doorPublicKey) = input;
-
         var cardLoopSize = FindLoopSize(cardPublicKey);
 
         return Transform(doorPublicKey, cardLoopSize);
