@@ -43,9 +43,37 @@ public class Day24Tests
         Day24.Part1().Should().Be(351);
     }
 
+    [TestCase(new[]
+    {
+        "sesenwnenenewseeswwswswwnenewsewsw",
+        "neeenesenwnwwswnenewnwwsewnenwseswesw",
+        "seswneswswsenwwnwse",
+        "nwnwneseeswswnenewneswwnewseswneseene",
+        "swweswneswnenwsewnwneneseenw",
+        "eesenwseswswnenwswnwnwsewwnwsene",
+        "sewnenenenesenwsewnenwwwse",
+        "wenwwweseeeweswwwnwwe",
+        "wsweesenenewnwwnwsenewsenwwsesesenwne",
+        "neeswseenwwswnwswswnw",
+        "nenwswwsewswnenenewsenwsenwnesesenew",
+        "enewnwewneswsewnwswenweswnenwsenwsw",
+        "sweneswneswneneenwnewenewwneswswnese",
+        "swwesenesewenwneswnwwneseswwne",
+        "enesenwswwswneneswsenwnewswseenwsese",
+        "wnwnesenesenenwwnenwsewesewsesesew",
+        "nenewswnwewswnenesenwnesewesw",
+        "eneswnwswnwsenenwnwnwwseeswneewsenese",
+        "neswnwewnwnwseenwseesewsenwsweewe",
+        "wseweeenwnesenwwwswnew",
+    }, 2208)]
+    public void Part2_Example_ReturnsCorrectAnswer(string[] input, int expected)
+    {
+        Day24.Solve2(input).Should().Be(expected);
+    }
+
     [Test]
     public void Part2_ReturnsCorrectAnswer()
     {
-        Day24.Part2().Should().Be(0);
+        Day24.Part2().Should().Be(3869);
     }
 }
