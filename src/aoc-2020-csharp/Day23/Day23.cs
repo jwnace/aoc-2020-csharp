@@ -1,74 +1,66 @@
-﻿namespace aoc_2020_csharp.Day23;
+﻿using System.Text;
+
+namespace aoc_2020_csharp.Day23;
 
 public static class Day23
 {
     private static readonly string Input = File.ReadAllText("Day23/day23.txt");
 
-    public static string Part1() => Solve1(Input, 100);
+    public static string Part1() => Solve1(Input, 100, 9);
 
-    public static long Part2() => Solve2(Input, 10_000_000);
+    public static long Part2() => Solve2(Input, 10_000_000, 1_000_000);
 
-    public static string Solve1(string input, int moves)
+    public static string Solve1(string input, int moves, int maxCup)
     {
-        var cups = input.Trim().Select(c => int.Parse(c.ToString())).ToArray();
-        var currentCup = cups[0];
+        var cups = Shuffle(input, moves, maxCup);
+
+        return GetAnswerForPart1(cups, maxCup);
+    }
+
+    public static long Solve2(string input, int moves, int maxCup)
+    {
+        var cups = Shuffle(input, moves, maxCup);
+
+        return GetAnswerForPart2(cups);
+    }
+
+    private static Dictionary<int, Cup> Shuffle(string input, int moves, int maxCup)
+    {
+        var cups = GetCups(input, maxCup);
+        var currentCup = cups.First().Value;
 
         for (var i = 0; i < moves; i++)
         {
-            var currentCupIndex = Array.IndexOf(cups, currentCup);
+            var pickedUpCups = new[] { currentCup.Next, currentCup.Next.Next, currentCup.Next.Next.Next };
+            var destinationCup = GetDestinationCup(currentCup, cups, pickedUpCups, maxCup);
 
-            if (currentCupIndex > cups.Length - 4)
-            {
-                cups = cups.Skip(3).Concat(cups.Take(3)).ToArray();
-                currentCupIndex = Array.IndexOf(cups, currentCup);
-            }
+            currentCup.Next = pickedUpCups.Last().Next;
+            pickedUpCups.Last().Next = destinationCup.Next;
+            destinationCup.Next = pickedUpCups.First();
 
-            var pickedUpCups = cups.Skip(currentCupIndex + 1).Take(3).ToArray();
-            var remainingCups = cups.Take(currentCupIndex + 1).Concat(cups.Skip(currentCupIndex + 4)).ToArray();
-            var destinationCup = currentCup - 1;
-
-            while (pickedUpCups.Contains(destinationCup) || destinationCup < 1)
-            {
-                destinationCup--;
-
-                if (destinationCup < 1)
-                {
-                    destinationCup = cups.Max();
-                }
-            }
-
-            var destinationCupIndex = Array.IndexOf(remainingCups, destinationCup);
-
-            cups = remainingCups
-                .Take(destinationCupIndex + 1)
-                .Concat(pickedUpCups)
-                .Concat(remainingCups.Skip(destinationCupIndex + 1))
-                .ToArray();
-
-            currentCup = cups[(Array.IndexOf(cups, currentCup) + 1) % cups.Length];
+            currentCup = currentCup.Next;
         }
 
-        var indexOf1 = Array.IndexOf(cups, 1);
-
-        return string.Join("", cups.Skip(indexOf1 + 1).Concat(cups.Take(indexOf1)));
+        return cups;
     }
 
-    public static long Solve2(string input, int moves)
+    private static Dictionary<int, Cup> GetCups(string input, int maxCup)
     {
-        const int maxCup = 1_000_000;
-
         var cups = input.Trim().Select(c => int.Parse(c.ToString())).ToArray();
-        var max = cups.Max();
-        var rest = Enumerable.Range(max + 1, maxCup - max).ToArray();
-        cups = cups.Concat(rest).ToArray();
 
-        var nodes = new Dictionary<int, Node>();
+        if (maxCup > 0)
+        {
+            var rest = Enumerable.Range(cups.Max() + 1, maxCup - cups.Max()).ToArray();
+            cups = cups.Concat(rest).ToArray();
+        }
 
-        Node? previous = null;
+        var nodes = new Dictionary<int, Cup>();
+
+        Cup? previous = null;
 
         foreach (var cup in cups)
         {
-            var node = new Node
+            var node = new Cup
             {
                 Value = cup
             };
@@ -85,38 +77,41 @@ public static class Day23
 
         nodes.Last().Value.Next = nodes.First().Value;
 
-        var currentNode = nodes.First().Value;
+        return nodes;
+    }
 
-        for (var i = 0; i < moves; i++)
+    private static Cup GetDestinationCup(Cup currentCup, Dictionary<int, Cup> cups, Cup[] pickedUpCups, int maxCup)
+    {
+        var destinationValue = currentCup.Value - 1;
+
+        while (pickedUpCups.Any(x => x.Value == destinationValue) || destinationValue < 1)
         {
-            var pickedUpCups = new[] { currentNode.Next, currentNode.Next.Next, currentNode.Next.Next.Next };
-            var destinationCup = currentNode.Value - 1;
+            destinationValue--;
 
-            while (pickedUpCups.Any(x => x.Value == destinationCup) || destinationCup < 1)
+            if (destinationValue < 1)
             {
-                destinationCup--;
-
-                if (destinationCup < 1)
-                {
-                    destinationCup = maxCup;
-                }
+                destinationValue = maxCup;
             }
-
-            var destinationNode = nodes[destinationCup];
-
-            currentNode.Next = pickedUpCups.Last().Next;
-            pickedUpCups.Last().Next = destinationNode.Next;
-            destinationNode.Next = pickedUpCups.First();
-
-            currentNode = currentNode.Next;
         }
 
-        return (long)nodes[1].Next.Value * nodes[1].Next.Next.Value;
+        return cups[destinationValue];
     }
 
-    private class Node
+    private static string GetAnswerForPart1(Dictionary<int, Cup> cups, int maxCup)
     {
-        public int Value { get; init; }
-        public Node Next { get; set; } = null!;
+        var cup = cups[1];
+
+        var builder = new StringBuilder();
+
+        for (var i = 0; i < maxCup - 1; i++)
+        {
+            cup = cup.Next;
+            builder.Append(cup.Value);
+        }
+
+        return builder.ToString();
     }
+
+    private static long GetAnswerForPart2(Dictionary<int, Cup> cups) =>
+        (long)cups[1].Next.Value * cups[1].Next.Next.Value;
 }
