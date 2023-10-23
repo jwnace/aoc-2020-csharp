@@ -8,9 +8,9 @@ public static class Day24
 
     public static int Part2() => Solve2(Input);
 
-    public static int Solve1(string[] input) => GetTiles(input).Count(x => x.Value);
+    public static int Solve1(IEnumerable<string> input) => GetTiles(input).Count(x => x.Value);
 
-    public static int Solve2(string[] input)
+    public static int Solve2(IEnumerable<string> input)
     {
         var tiles = GetTiles(input);
         var newTiles = new Dictionary<(int X, int Y), bool>();
@@ -30,18 +30,12 @@ public static class Day24
                     var neighbors = GetNeighbors(x, y);
                     var count = neighbors.Count(n => tiles.GetValueOrDefault(n));
 
-                    if (value && (count == 0 || count > 2))
+                    newTiles[(x, y)] = value switch
                     {
-                        newTiles[(x, y)] = false;
-                    }
-                    else if (!value && count == 2)
-                    {
-                        newTiles[(x, y)] = true;
-                    }
-                    else
-                    {
-                        newTiles[(x, y)] = value;
-                    }
+                        true when count is 0 or > 2 => false,
+                        false when count is 2 => true,
+                        _ => value
+                    };
                 }
             }
 
@@ -51,89 +45,17 @@ public static class Day24
         return tiles.Count(x => x.Value);
     }
 
-    private static (int, int)[] GetNeighbors(int x, int y)
+    private static IEnumerable<(int X, int Y)> GetNeighbors(int x, int y) => new[]
     {
-        var neighbors = new[]
-        {
-            (x - 1, y),
-            (x + 1, y),
-            (x, y + 1),
-            (x + 1, y + 1),
-            (x - 1, y - 1),
-            (x, y - 1),
-        };
-        return neighbors;
-    }
+        (x - 1, y),
+        (x + 1, y),
+        (x, y + 1),
+        (x + 1, y + 1),
+        (x - 1, y - 1),
+        (x, y - 1),
+    };
 
-    private static HashSet<(int X, int Y)> GetBlackTiles(string[] input)
-    {
-        var blackTiles = new HashSet<(int X, int Y)>();
-
-        foreach (var line in input)
-        {
-            var (x, y) = (0, 0);
-
-            for (var i = 0; i < line.Length; i++)
-            {
-                var c1 = line[i];
-                var c2 = line.ElementAtOrDefault(i + 1);
-
-                if (c1 == 'w')
-                {
-                    // go west
-                    x--;
-                }
-                else if (c1 == 'e')
-                {
-                    // go east
-                    x++;
-                }
-                else if (c1 == 'n' && c2 == 'w')
-                {
-                    // go northwest
-                    y++;
-                    i++;
-                }
-                else if (c1 == 'n' && c2 == 'e')
-                {
-                    // go northeast
-                    x++;
-                    y++;
-                    i++;
-                }
-                else if (c1 == 's' && c2 == 'w')
-                {
-                    // go southwest
-                    x--;
-                    y--;
-                    i++;
-                }
-                else if (c1 == 's' && c2 == 'e')
-                {
-                    // go southeast
-                    y--;
-                    i++;
-                }
-                else
-                {
-                    throw new Exception($"Invalid direction: {c1}{c2}");
-                }
-            }
-
-            if (blackTiles.Contains((x, y)))
-            {
-                blackTiles.Remove((x, y));
-            }
-            else
-            {
-                blackTiles.Add((x, y));
-            }
-        }
-
-        return blackTiles;
-    }
-
-    private static Dictionary<(int X, int Y), bool> GetTiles(string[] input)
+    private static Dictionary<(int X, int Y), bool> GetTiles(IEnumerable<string> input)
     {
         var tiles = new Dictionary<(int X, int Y), bool>();
 
@@ -146,45 +68,44 @@ public static class Day24
                 var c1 = line[i];
                 var c2 = line.ElementAtOrDefault(i + 1);
 
-                if (c1 == 'w')
+                switch (c1)
                 {
-                    // go west
-                    x--;
-                }
-                else if (c1 == 'e')
-                {
-                    // go east
-                    x++;
-                }
-                else if (c1 == 'n' && c2 == 'w')
-                {
-                    // go northwest
-                    y++;
-                    i++;
-                }
-                else if (c1 == 'n' && c2 == 'e')
-                {
-                    // go northeast
-                    x++;
-                    y++;
-                    i++;
-                }
-                else if (c1 == 's' && c2 == 'w')
-                {
-                    // go southwest
-                    x--;
-                    y--;
-                    i++;
-                }
-                else if (c1 == 's' && c2 == 'e')
-                {
-                    // go southeast
-                    y--;
-                    i++;
-                }
-                else
-                {
-                    throw new Exception($"Invalid direction: {c1}{c2}");
+                    case 'w':
+                    {
+                        x--;
+                        break;
+                    }
+                    case 'e':
+                    {
+                        x++;
+                        break;
+                    }
+                    case 'n' when c2 == 'w':
+                    {
+                        y++;
+                        i++;
+                        break;
+                    }
+                    case 'n' when c2 == 'e':
+                    {
+                        x++;
+                        y++;
+                        i++;
+                        break;
+                    }
+                    case 's' when c2 == 'w':
+                    {
+                        x--;
+                        y--;
+                        i++;
+                        break;
+                    }
+                    case 's' when c2 == 'e':
+                    {
+                        y--;
+                        i++;
+                        break;
+                    }
                 }
             }
 
